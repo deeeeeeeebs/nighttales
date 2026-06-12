@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basque night tales</title>
+    <meta name="description" content="Beautiful Basque bedtime stories for children. Journey through magical night tales with fireflies, giants, and the moon.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=2">
+</head>
+<body>
+
+    <!-- Starfield (Decorative Canvas background) -->
+    <canvas id="starsCanvas" class="stars" aria-hidden="true"></canvas>
+
+    <!-- ====== BOTTOM RIGHT CONTROLS GROUP ====== -->
+    <div class="controls-group">
+        <!-- Day/Night Shift Button -->
+        <button id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+            <svg id="theme-icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg id="theme-icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none;">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </button>
+
+        <!-- Language Picker Button & Dropdown -->
+        <div class="lang-picker-container">
+            <button id="lang-toggle" aria-haspopup="listbox" aria-label="Select language" title="Select language">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+            </button>
+            <div class="lang-dropdown" id="lang-dropdown" role="listbox">
+                <button class="lang-option" data-lang="basque" role="option">Euskara</button>
+                <button class="lang-option" data-lang="georgian" role="option">ქართული</button>
+                <button class="lang-option" data-lang="english" role="option">English</button>
+            </div>
+        </div>
+
+        <!-- Ambient audio stream -->
+        <audio id="bg-audio" loop src="assets/audio/audio.mp3"></audio>
+
+        <!-- Audio Toggle Button -->
+        <button id="audio-toggle" aria-label="Toggle audio" title="Toggle sound">
+            <svg id="audio-icon-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <line x1="23" x2="17" y1="9" y2="15"/><line x1="17" x2="23" y1="9" y2="15"/>
+            </svg>
+            <svg id="audio-icon-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;" aria-hidden="true">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- ====== WELCOME SCREEN ====== -->
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <p class="welcome-eyebrow">✦ Ipurtargia ✦</p>
+            <h1 id="welcome-title">Night tales</h1>
+            <p class="welcome-sub">Choose a tale and follow the light...</p>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">▾ scroll ▾</div>
+        <!-- Forest silhouette border -->
+        <svg class="forest-silhouette" viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0,200 L0,130 L40,120 L50,80 L60,120 L80,100 L90,50 L100,100 L120,80 L130,110 L160,90 L170,40 L180,90 L200,70 L210,110 L240,95 L250,55 L260,95 L290,80 L310,120 L340,90 L350,45 L360,90 L390,70 L410,115 L450,85 L460,30 L470,85 L500,65 L520,110 L550,80 L570,120 L600,90 L620,50 L630,90 L660,75 L680,120 L720,85 L730,40 L740,85 L770,65 L790,110 L820,80 L840,120 L870,90 L890,55 L900,90 L930,70 L950,115 L990,80 L1000,35 L1010,80 L1040,60 L1060,110 L1090,85 L1100,45 L1110,85 L1140,70 L1160,115 L1200,80 L1210,40 L1220,80 L1260,60 L1280,110 L1310,90 L1330,55 L1340,90 L1370,70 L1400,115 L1440,85 L1440,200 Z" />
+        </svg>
+    </div>
+ 
+    <!-- ====== LEFT MENU ====== -->
+    <div id="book-menu">
+        <button id="menu-toggle" aria-label="Open tales menu" title="Tales">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+        </button>
+        
+        <!-- Main menu panel with sections -->
+        <nav id="menu-panel" aria-label="Tales Sections">
+            <p class="menu-label">✦ Night Tales</p>
+            <button class="menu-section-btn" id="sec-btn-basque" aria-haspopup="true" aria-controls="submenu-basque">
+                <span class="section-title">Basque night tales</span>
+                <span class="section-arrow">▸</span>
+            </button>
+            <button class="menu-section-btn" id="sec-btn-georgian" aria-haspopup="true" aria-controls="submenu-georgian">
+                <span class="section-title">Georgian night tales</span>
+                <span class="section-arrow">▸</span>
+            </button>
+        </nav>
+
+        <!-- Submenu panel for Basque Tales -->
+        <div class="submenu-panel" id="submenu-basque" aria-label="Basque Tales">
+            <p class="menu-label">✦ Basque Tales</p>
+            <button class="tale-btn" data-tale="0">
+                <span class="tale-btn-basque">Ipurtargia eta Axeria</span>
+                <span class="tale-btn-en">The Firefly and the Fox</span>
+            </button>
+            <button class="tale-btn" data-tale="1">
+                <span class="tale-btn-basque">Basajaunaren Oparia</span>
+                <span class="tale-btn-en">The Basajaun's Gift</span>
+            </button>
+            <button class="tale-btn" data-tale="2">
+                <span class="tale-btn-basque">Ilargiaren Negar Malkoak</span>
+                <span class="tale-btn-en">The Moon's Teardrops</span>
+            </button>
+        </div>
+
+        <!-- Submenu panel for Georgian Tales -->
+        <div class="submenu-panel" id="submenu-georgian" aria-label="Georgian Tales">
+            <p class="menu-label">✦ Georgian Tales</p>
+            <button class="tale-btn" data-tale="3">
+                <span class="tale-btn-basque">ირემი და მზე</span>
+                <span class="tale-btn-en">The Deer and the Sun</span>
+            </button>
+            <button class="tale-btn" data-tale="4">
+                <span class="tale-btn-basque">ოქროს ბროწეული</span>
+                <span class="tale-btn-en">The Golden Pomegranate</span>
+            </button>
+            <button class="tale-btn" data-tale="5">
+                <span class="tale-btn-basque">ციკარილას ვარსკვლავი</span>
+                <span class="tale-btn-en">The Tsikarila Star</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ====== TALE READER ====== -->
+    <main id="tale-reader"></main>
+
+    <!-- ====== FLOATING FIREFLY (Companion) ====== -->
+    <div id="firefly-container" aria-hidden="true">
+        <div id="firefly-visual-wrapper">
+            <div id="firefly-glow"></div>
+            <img id="firefly-image" src="assets/images/firefly/firefly.svg" alt="Firefly Icon">
+        </div>
+    </div>
+
+    <!-- ====== BACK TO TOP BUTTON ====== -->
+    <button id="back-to-top" aria-label="Back to top">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5"/>
+            <path d="m5 12 7-7 7 7"/>
+        </svg>
+        Back to top
+    </button>
+
+    <script src="assets/js/script.js?v=2"></script>
+</body>
+</html>
